@@ -4,7 +4,7 @@ from app.db.session import SessionLocal
 from app.models.user import User
 from app.services.security import hash_password, verify_password
 from app.services.jwt import create_access_token
-from app.schemas.user import UserCreate
+from app.schemas.user import UserCreate, UserResponse
 from app.core.config import settings
 
 router = APIRouter(
@@ -21,7 +21,7 @@ def get_db():
 
 # Register Endpoint - Post Request
 
-@router.post("/register")
+@router.post("/register", response_model=UserResponse)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
     # Checks if user already exists
     existing_user = db.query(User).filter(User.email == user_in.email).first()
@@ -37,7 +37,10 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return {"message": "User successfully created!", "user_id": new_user.id}
+    # return {"message": "User successfully created!", "user_id": new_user.id}
+    return new_user
+
+
 
 # Login Endpoint - Post Request
 

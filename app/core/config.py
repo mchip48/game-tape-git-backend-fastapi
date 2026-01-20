@@ -1,12 +1,12 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    app_name: str
-    env: str
+    app_name: str = "Game Tape"
+    env: str = "development"
 
-    secret_key: str
-    access_token_expire_minutes: int
-    database_url: str
+    secret_key: str = "supersecretkey"
+    access_token_expire_minutes: int 
+    database_url: str = "sqlite:///./gametape.db"
     redis_url: str
 
     class Config:

@@ -4,6 +4,7 @@ from app.db.session import SessionLocal
 from app.models.user import User
 from app.services.security import hash_password, verify_password
 from app.services.jwt import create_access_token
+from app.schemas.user import UserCreate
 from app.core.config import settings
 
 router = APIRouter(
@@ -21,17 +22,17 @@ def get_db():
 # Register Endpoint - Post Request
 
 @router.post("/register")
-def register(username: str, email: str, password: str, db: Session = Depends(get_db)):
+def register(user_in: UserCreate, db: Session = Depends(get_db)):
     # Checks if user already exists
-    existing_user = db.query(User).filter(User.email == email).first()
+    existing_user = db.query(User).filter(User.email == user_in.email).first()
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
     
     # Hashes password
-    hashed_pw = hash_password(password)
+    hashed_pw = hash_password(user_in.password)
 
     # Create User Object
-    new_user = User(username=-username, email=email, hashed_password=hashed_pw)
+    new_user = User(username=user_in.username, email=user_in.email, hashed_password=hashed_pw)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

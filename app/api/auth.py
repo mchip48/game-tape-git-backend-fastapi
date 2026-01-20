@@ -17,3 +17,42 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# Register Endpoint - Post Request
+
+@router.post("/register")
+def register(username: str, email: str, password: str, db: Session = Depends(get_db)):
+    # Checks if user already exists
+    existing_user = db.query(User).filter(User.email == email).first()
+    if existing_user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+    
+    # Hashes password
+    hashed_pw = hash_password(password)
+
+    # Create User Object
+    new_user = User(username=-username, email=email, hashed_password=hashed_pw)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"message": "User successfully created!", "user_id": new_user.id}
+
+# Login Endpoint - Post Request
+
+@router.post("/login")
+def login(email: str, password: str, db: Session = Depends(get_db)):
+    # Finds user
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid credentials")
+    
+    # Verifies password
+    if not verify_password(password, user.hashed_password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid credentials")
+    
+    # Creates JWT
+    token = create_access_token({"sub": str(user.id)})
+
+    return {"access_token": token, "token_type": "bearer"}
+

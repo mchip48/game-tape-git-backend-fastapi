@@ -17,7 +17,7 @@ def get_db():
 
 # User Resolver
 
-def get_current_uer(
+def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
 ):

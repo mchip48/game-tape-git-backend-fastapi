@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.core.config import settings
 from app.api import auth
+from app.api import users
 
 print(settings.app_name)
 print(settings.secret_key)
@@ -14,7 +15,7 @@ app = FastAPI(
 
 # Inclusion of authorization routes
 app.include_router(auth.router)
-
+app.include_router(users.router)
 
 @app.get("/health")
 def health_check():

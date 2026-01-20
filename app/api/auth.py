@@ -6,6 +6,7 @@ from app.services.security import hash_password, verify_password
 from app.services.jwt import create_access_token
 from app.schemas.user import UserCreate, UserResponse
 from app.core.config import settings
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(
     prefix="/auth",
@@ -45,14 +46,14 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
 # Login Endpoint - Post Request
 
 @router.post("/login")
-def login(email: str, password: str, db: Session = Depends(get_db)):
+def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     # Finds user
-    user = db.query(User).filter(User.email == email).first()
+    user = db.query(User).filter(User.email == form_data.username).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid credentials")
     
     # Verifies password
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid credentials")
     
     # Creates JWT

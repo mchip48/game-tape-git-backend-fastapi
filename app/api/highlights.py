@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
-from app.db.session import get_db
+from app.api.auth import get_db
 from app.models.highlight import Highlight
 from app.schemas.highlight import HighlightCreate, HighlightResponse
 

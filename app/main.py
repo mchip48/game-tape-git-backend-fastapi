@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from app.core.config import settings
-from app.api import auth
-from app.api import users
-from app.api import repos
-from app.api import commits
+from app.api import auth, users, repos, commits, highlights
+
 print(settings.app_name)
 print(settings.secret_key)
 
@@ -19,6 +17,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(repos.router)
 app.include_router(commits.router)
+app.include_router(highlights.router)
 
 # Health check
 

@@ -16,14 +16,14 @@ router = APIRouter(
 @router.post("/", response_model=RepoResponse)
 def create_repo(repo_in: RepoCreate, current_user = Depends(get_current_user), db: Session = Depends(get_db)):
     # Check if URL already exists
-    existing_repo = db.query(Repo).filter(Repo.url == repo_in.url).first()
+    existing_repo = db.query(Repo).filter(Repo.url == str(repo_in.url)).first()
     if existing_repo:
         raise HTTPException(status_code=400, detail="Repo with this URL already exists")
     
     new_repo = Repo(
         name=repo_in.name,
         description=repo_in.description,
-        url=repo_in.url,
+        url=str(repo_in.url), # <- convert HttpUrl to str
         owner_id=current_user.id
     )
     db.add(new_repo)

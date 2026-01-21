@@ -14,7 +14,7 @@ from alembic import context
 from app.db.base import Base  # <- make sure this points to your Base metadata
 
 from app.models import user  # noqa: ensures User model is loaded
-from app.models import Repo, Commit, Highlight
+from app.models import Repo, Commit, Highlight # noqa: load models for migration
 
 
 # this is the Alembic Config object, which provides

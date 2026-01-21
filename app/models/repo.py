@@ -1,11 +1,8 @@
 # app/models/repo.py
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 from app.db.base import Base
 from datetime import datetime
-
-created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
 class Repo(Base):
     __tablename__ = "repos"
@@ -19,3 +16,12 @@ class Repo(Base):
     owner = relationship("User", back_populates="repos")
 
     commits = relationship("Commit", back_populates="repo", cascade="all, delete-orphan")
+
+    # Timestamps
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )

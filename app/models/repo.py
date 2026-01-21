@@ -1,7 +1,11 @@
 # app/models/repo.py
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from app.db.base import Base
+from datetime import datetime
+
+created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
 class Repo(Base):
     __tablename__ = "repos"

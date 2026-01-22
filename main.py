@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 # Import your project modules
 from app.core.config import settings
-from app.api import auth, users, repos, commits, highlights
+from app.api import auth, users, repos, commits, highlights, github_routes
 
 # -----------------------------
 # Load .env and GitHub token
@@ -34,6 +34,7 @@ app.include_router(users.router)
 app.include_router(repos.router)
 app.include_router(commits.router)
 app.include_router(highlights.router)
+app.include_router(github_routes.router)
 
 # -----------------------------
 # Health check endpoint

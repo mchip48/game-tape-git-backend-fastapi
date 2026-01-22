@@ -2,6 +2,8 @@
 
 from fastapi import APIRouter, HTTPException
 from app.core.github_services import get_user, get_repos, get_commits
+from app.core.github_analysis import summarize_commits
+from app.core.github_scoring import score_repo
 import os
 
 router = APIRouter(prefix="/github", tags=["GitHub"])
@@ -28,3 +30,15 @@ async def github_commits(repo_name: str, per_page: int = 10):
         return await get_commits(repo_name=repo_name, per_page=per_page)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/score/{repo_name}")
+async def score_repository(repo_name: str):
+    commits = await get_commits(repo_name)
+    analysis = await summarize_commits(commits)
+
+    score = score_repo(analysis)
+
+    return {
+        "repo": repo_name,
+        "score": score
+    }

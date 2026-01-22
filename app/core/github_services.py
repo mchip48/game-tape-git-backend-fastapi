@@ -2,7 +2,7 @@
 import httpx
 import os
 from app.core.github import GITHUB_API_BASE, get_headers
-from app.core.github_analysis import summarize_commits  # keep your summarization logic
+from app.core.github_analysis import summarize_commits  # keep summarization logic
 
 async def get_user():
     """Fetch authenticated GitHub user info"""

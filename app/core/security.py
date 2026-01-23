@@ -1,21 +1,21 @@
 # app/core/security.py
 
 import os
-from fastapi import Header, HTTPException, status
+from fastapi import Header, HTTPException
 
-API_KEY = os.getenv("API_KEY")
+async def verify_api_key(x_api_key: str = Header(None)):
+    api_key = os.getenv("API_KEY")
 
-if not API_KEY:
-    raise RuntimeError("API_KEY not set in environment")
-
-
-async def verify_api_key(x_api_key: str = Header(...)):
-    """
-    Dependency that verifies the API key sent in request headers.
-    Client must send: X-API-Key: <your_key>
-    """
-    if x_api_key != API_KEY:
+    if not api_key:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or missing API key",
+            status_code=500,
+            detail="Server misconfiguration: API_KEY not set"
         )
+
+    if x_api_key != api_key:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or missing API key"
+        )
+
+    return True

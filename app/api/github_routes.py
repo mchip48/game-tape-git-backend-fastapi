@@ -1,12 +1,17 @@
 # # app/api/github_routes.py
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from app.core.github_services import get_user, get_repos, get_commits, get_commits_raw
 from app.core.github_analysis import summarize_commits
 from app.core.github_scoring import score_repo
+from app.core.security import verify_api_key
 import os
 
-router = APIRouter(prefix="/github", tags=["GitHub"])
+router = APIRouter(
+    prefix="/github",
+    tags=["GitHub"],
+    dependencies=[Depends(verify_api_key)]
+)
 
 @router.get("/user")
 async def github_user():

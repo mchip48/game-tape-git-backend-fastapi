@@ -119,16 +119,17 @@
 #     return {"status": "GitHub token NOT loaded"}
 
 # main.py
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
 import os
-from dotenv import load_dotenv
 
 # Project imports
 from app.core.config import settings
 from app.api import auth, users, repos, commits, highlights, github_routes
 
 # Load .env
-load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
 

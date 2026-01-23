@@ -1,10 +1,14 @@
 # # app/api/github_routes.py
 
-from fastapi import APIRouter, HTTPException, Depends
-from app.core.github_services import get_user, get_repos, get_commits, get_commits_raw
+from fastapi import APIRouter, HTTPException, Request, Depends
+
 from app.core.github_analysis import summarize_commits
 from app.core.github_scoring import score_repo
+from app.core.github_services import get_user, get_repos, get_commits, get_commits_raw
+
+from app.core.rate_limiter import limiter
 from app.core.security import verify_api_key
+
 import os
 
 router = APIRouter(
@@ -30,14 +34,16 @@ async def my_repos():
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/commits/{repo_name}")
-async def github_commits(repo_name: str, per_page: int = 10):
+@limiter.limit("20/minute")
+async def github_commits(request: Request, repo_name: str, per_page: int = 10):
     try:
         return await get_commits(repo_name=repo_name, per_page=per_page)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/score/{repo_name}")
-async def score_repository(repo_name: str):
+@limiter.limit("10/minute")
+async def score_repository(request: Request, repo_name: str):
     
     commits = await get_commits_raw(repo_name)
     analysis = await summarize_commits(commits)

@@ -1,28 +1,32 @@
 # main.py
-from dotenv import load_dotenv
-load_dotenv()
-
-# FastAPI
-from fastapi import FastAPI
-import os
-
-# SlowAPI
-from slowapi import _rate_limit_exceeded_handler
-from slowapi.errors import RateLimitExceeded
+from app.api import auth, users, repos, commits, highlights, github_routes
+from app.core.config import settings
 from app.core.rate_limiter import limiter
 
-# Project imports
-from app.core.config import settings
-from app.api import auth, users, repos, commits, highlights, github_routes
+from dotenv import load_dotenv
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import os
+
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 # Load .env
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
+FRONTEND_ORIGINS = os.getenv("FRONTEND_ORIGINS", "")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
 
-print(f"App Name: {settings.app_name}")
-print(f"Secret Key Loaded: {settings.secret_key is not None}")
-print(f"GitHub Token Loaded: {GITHUB_TOKEN is not None}")
-print(f"GitHub Username Loaded: {GITHUB_USERNAME is not None}")
+# print(f"App Name: {settings.app_name}")
+# print(f"Secret Key Loaded: {settings.secret_key is not None}")
+# print(f"GitHub Token Loaded: {GITHUB_TOKEN is not None}")
+# print(f"GitHub Username Loaded: {GITHUB_USERNAME is not None}")
+
+def get_allowed_origins():
+    return [o.strip() for o in FRONTEND_ORIGINS.split(",") if o.strip()]
 
 # Create FastAPI app
 app = FastAPI(
@@ -31,9 +35,24 @@ app = FastAPI(
     description="Backend service for Git Game Tape analysis and security scanning"
 )
 
+# Add CORS middleware before rate limiter
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=get_allowed_origins(),
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["Authorization", "Content-Type", "X-API-Key"],
+)
+
 # Register rate limiting globally
+limiter = Limiter(key_func=lambda request: request.client.host)
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(429, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
+# app.state.limiter = limiter
+# app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Include routers
 app.include_router(auth.router)

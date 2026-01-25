@@ -35,7 +35,7 @@ async def my_repos():
 
 @router.get("/commits/{repo_name}")
 @limiter.limit("20/minute")
-async def github_commits(request: Request, repo_name: str, per_page: int = 10):
+async def github_commits(request: Request, repo_name: str, per_page: int = 100): # Also changed this from 10 to be 100 per page
     try:
         return await get_commits(repo_name=repo_name, per_page=per_page)
     except Exception as e:

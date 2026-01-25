@@ -42,7 +42,8 @@ app.add_middleware(
     allow_origins=get_allowed_origins(),
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["Authorization", "Content-Type", "X-API-Key"],
+    allow_headers=["*"]
+    # allow_headers=["Authorization", "Content-Type", "X-API-Key"],
 )
 
 # Register rate limiting globally

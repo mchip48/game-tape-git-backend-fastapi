@@ -58,7 +58,7 @@ async def get_commits(repo_name: str, per_page: int = 10):
 
 # Helper function to turn raw commit data from a dict into a list[dict]
 
-async def get_commits_raw(repo_name: str, per_page: int = 10):
+async def get_commits_raw(repo_name: str, per_page: int = 100): # updated int = 10 to be int = 100, fix the rest of this function for pagination later 
     """Fetch raw commits list only (no summary)."""
     username = os.getenv("GITHUB_USERNAME")
     if not username:

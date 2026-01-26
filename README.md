@@ -25,9 +25,9 @@ Core Features:
 - Clean FastAPI service architecture
 
 Tech Stack -
-----------
+---------------
 Backend:
-----------
+---------------
 Python
 FastAPI
 Github REST API
@@ -35,9 +35,9 @@ API-Key Authentication
 Rate Limiting (SlowAPI)
 CORS Middleware
 Async Service Architecture
-----------
+---------------
 Frontend:
-----------
+---------------
 React (Vite)
 TypeScript
 TanStack React Query
@@ -65,5 +65,118 @@ Game Tape was built with security as a priority:
 
 Getting Started (Locally):
 
-1) Backend Setup:
+Backend Setup:
+---------------
+1) Copy and paste this in your terminal:
 
+git clone https://github.com/YOUR_USERNAME/game-tape-git-backend-fastapi
+cd game-tape-git-backend-fastapi
+python -m venv .venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+
+2) Create a .env file: 
+
+GITHUB_TOKEN=your_github_token
+API_KEY=your_demo_api_key
+ENV=dev
+
+3) Run the server:
+
+uvicorn main:app --reload
+---------------
+
+Backend runs at:
+http://127.0.0.1:8000
+
+...............
+
+Frontend Setup:
+---------------
+
+1) Copy and paste this in your terminal:
+
+git clone https://github.com/YOUR_USERNAME/game-tape-frontend
+cd game-tape-frontend
+npm install
+
+2) Create a .env.local file and copy and paste this into there: 
+
+VITE_API_BASE_URL=http://127.0.0.1:8000
+
+3) Run frontend:
+
+npm run dev
+---------------
+
+Frontend runs at:
+http://localhost:8080
+
+...............
+
+Demo Instructions:
+
+- Open the frontend
+
+- Paste a provided API key into the API key input field
+
+- Select a repository or enter a repo name
+
+- View live analysis and scoring
+---------------
+Project Architecture:
+
+backend/
+├── app/
+│   ├── api/
+│   ├── core/
+│   ├── services/
+│   ├── security/
+│   └── analysis/
+│
+frontend/
+├── src/
+│   ├── components/
+│   ├── lib/
+│   ├── pages/
+│   └── api/
+
+Each layer is intentionally separated to support:
+
+- AI/ML pipelines
+
+- OAuth
+
+- User accounts
+
+- Background jobs
+
+- Scalable data storage
+
+---------------
+
+Future Roadmap:
+
+- AI-powered commit summarization
+
+- GitHub OAuth login
+
+- Multi-user accounts
+
+- Historical repo tracking
+
+- Commit embeddings & clustering
+
+- Exportable reports (PDF / JSON)
+
+---------------
+
+📝 License
+
+MIT License
+
+---------------
+
+Built by Matthew Chipkin 
+
+---------------

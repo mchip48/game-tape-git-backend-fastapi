@@ -40,9 +40,9 @@ Frontend:
 ---------------
 React (Vite)
 TypeScript
-TanStack React Query
+<!-- TanStack React Query -->
 Tailwind CSS
-ShadCN UI
+<!-- ShadCN UI -->
 LocalStorage API key handling
 
 
@@ -69,7 +69,7 @@ Backend Setup:
 ---------------
 1) Copy and paste this in your terminal:
 
-git clone https://github.com/YOUR_USERNAME/game-tape-git-backend-fastapi
+git clone https://github.com/mchip48/game-tape-git-backend-fastapi
 cd game-tape-git-backend-fastapi
 python -m venv .venv
 source .venv/bin/activate
@@ -78,7 +78,7 @@ uv pip install -r requirements.txt
 2) Create a .env file: 
 
 GITHUB_TOKEN=your_github_token
-API_KEY=your_demo_api_key
+API_KEY=your_own_demo_api_key
 ENV=dev
 
 3) Run the server:

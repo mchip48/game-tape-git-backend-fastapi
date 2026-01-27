@@ -2,7 +2,7 @@ Game Tape Gitty — GitHub Repository Analysis Platform
 
 Game Tape is a full-stack web application that analyzes GitHub repositories and generates meaningful insights about development activity, commit quality, and project consistency.
 
-It is designed as a secure, extensible platform that can later support AI/ML analysis, OAuth, and multi-user accounts, while remaining simple enough to demo and use immediately.
+It's designed as a secure, extensible platform that can later support AI/ML analysis, OAuth, and multi-user accounts, while remaining simple enough to demo and use right away.
 
 Core Features:
 
@@ -40,7 +40,7 @@ Frontend:
 ---------------
 React (Vite)
 TypeScript
-<!-- TanStack React Query -->
+TanStack React Query
 Tailwind CSS
 <!-- ShadCN UI -->
 LocalStorage API key handling
@@ -77,8 +77,10 @@ uv pip install -r requirements.txt
 
 2) Create a .env file: 
 
-GITHUB_TOKEN=your_github_token
-API_KEY=your_own_demo_api_key
+GITHUB_TOKEN=your_github_token 
+<!-- ((( Go to Github -> Settings Tab -> Developer Settings - at the bottom tab on the left-hand sidebar -> create Fine-Grained Token for specifics on Repo Accessibility))) -->
+API_KEY=your_own_demo_api_key 
+<!-- ( ^ name it whatever you want it to be but must start with API_KEY) -->
 ENV=dev
 
 3) Run the server:
@@ -96,13 +98,14 @@ Frontend Setup:
 
 1) Copy and paste this in your terminal:
 
-git clone https://github.com/YOUR_USERNAME/game-tape-frontend
-cd game-tape-frontend
+git clone https://github.com/mchip48/repo-insights
+cd repo-insights
 npm install
 
 2) Create a .env.local file and copy and paste this into there: 
 
 VITE_API_BASE_URL=http://127.0.0.1:8000
+VITE_API_KEY=your_own_demo_api_key (name it whatever you want it to be)
 
 3) Run frontend:
 

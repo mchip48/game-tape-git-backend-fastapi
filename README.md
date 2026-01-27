@@ -106,7 +106,7 @@ npm install
 
 VITE_API_BASE_URL=http://127.0.0.1:8000
 VITE_API_KEY=your_own_demo_api_key (name it whatever you want it to be)
-<!-- Must match this value from earlier i.e your_own_demo_api_key caleld API_KEY in the backend -->
+<!-- Must match this value from earlier i.e your_own_demo_api_key called API_KEY in the backend -->
 3) Run frontend:
 
 npm run dev

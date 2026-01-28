@@ -46,7 +46,6 @@ async def get_commits(repo_name: str, per_page: int = 10):
             else:
                 raise ValueError(f"Unexpected commit format: {c}")
 
-    # ✅ THIS WAS THE BUG— now fixed
     # summarize_commits expects list[dict]
     summary = await summarize_commits(commits)
 
